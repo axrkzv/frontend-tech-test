@@ -21,7 +21,7 @@ class Task extends Component {
   }
 
   endDragHandler = (subTask) => {
-    const { task, task: { subTasks } } = this.props
+    const { task, task: { subTasks }, tasksInfo } = this.props
     const draggedSubTaskIndex = subTasks.findIndex(x => x.id === subTask.id)
     if (draggedSubTaskIndex === subTask.index) {
       return
@@ -30,7 +30,7 @@ class Task extends Component {
     const newSubTasks = update(subTasks, {
       $splice: [[draggedSubTaskIndex, 1], [subTask.index, 0, draggedSubTask]]
     })
-    this.props.updateTask({ ...task, subTasks: newSubTasks })
+    this.props.updateTask({ ...task, subTasks: newSubTasks }, tasksInfo)
   }
 
   toggleDisplayUpdateTaskModal = () => {
@@ -38,7 +38,7 @@ class Task extends Component {
   }
 
   render() {
-    const { isPossibleToAddSubTask, task } = this.props
+    const { isPossibleToAddSubTask, task, tasksInfo } = this.props
     const { id, name, description, status, subTasks } = task
     const { displayUpdateTaskModal } = this.state
 
@@ -75,6 +75,7 @@ class Task extends Component {
           {isPossibleToAddSubTask && <AddSubTask id={id} />}
           {displayUpdateTaskModal && <UpdateTaskModal
             task={task}
+            tasksInfo={tasksInfo}
             toggle={this.toggleDisplayUpdateTaskModal}
             updateTask={this.props.updateTask}
             deleteTask={this.props.deleteTask}
@@ -93,6 +94,7 @@ Task.propTypes = {
     subTasks: PropTypes.array.isRequired
   }).isRequired,
   isPossibleToAddSubTask: PropTypes.bool,
+  tasksInfo: PropTypes.object.isRequired,
   updateTask: PropTypes.func.isRequired,
   deleteTask: PropTypes.func.isRequired
 }

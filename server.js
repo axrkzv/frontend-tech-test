@@ -4,7 +4,7 @@
 const app = require('express')();
 var cors = require('cors')
 var bodyParser = require('body-parser');
-const tasksContainer = require('./tasks.json');
+const tasksContainer = require('./tasks1.json');
 var nextId = 1000
 
 app.use(cors())
@@ -15,8 +15,34 @@ app.use(bodyParser.json())
  * 
  * Return the list of tasks with status code 200.
  */
+
+const pageLimit = 50
+
+const getFiltredTasksByStatus = (status, page = 0) => {
+  const start = page * pageLimit
+  const end = start + pageLimit
+  let filtredTasks = tasksContainer.tasks
+  if(status) {
+    filtredTasks = filtredTasks.filter(x => x.status === status)
+  }
+  const tasks = filtredTasks.slice(start, end)
+  return { tasks, pages: Math.ceil(filtredTasks.length / pageLimit), status }
+}
+
 app.get('/tasks', (req, res) => {
   return res.status(200).json(tasksContainer);
+});
+
+app.get('/tasks/:page', (req, res) => {
+  const page = parseInt(req.params.page, 10)
+  if (!Number.isNaN(page)) {
+    const { tasks, pages, status } = getFiltredTasksByStatus(req.query.status, page)
+    return res.status(200).json({ tasks, pages, status })
+  } else {
+    return res.status(400).json({
+      message: 'Bad request.',
+    });
+  }
 });
 
 /**
@@ -75,9 +101,19 @@ app.put('/task/update/:id', (req, res) => {
       task.description = req.body.description;
       task.status = req.body.status;
       task.subTasks = req.body.subTasks;
-      return res.status(200).json({
-        task
-      });
+      const { status, selectedPage } = req.query
+      if(status && selectedPage) {
+        const { tasks, pages } = getFiltredTasksByStatus(status, selectedPage)
+        return res.status(200).json({
+          task,
+          lastTask: tasks.length > 0 && tasks[tasks.length - 1],
+          pages
+        });
+      } else {
+        return res.status(200).json({
+          task
+        });
+      }
     } else {
       return res.status(404).json({
         message: 'Not found',
@@ -110,9 +146,11 @@ app.post('/task/create', (req, res) => {
 
   tasksContainer.tasks.push(task);
 
+  const { tasks, pages } = getFiltredTasksByStatus(req.query.status)
   return res.status(201).json({
     message: 'Resource created',
-    task
+    task,
+    pages
   });
 });
 
@@ -135,9 +173,13 @@ app.delete('/task/delete/:id', (req, res) => {
     if (taskIndex >= 0) {
       const task = tasksContainer.tasks[taskIndex]
       tasksContainer.tasks.splice(taskIndex, 1);
+      const { status, selectedPage } = req.query
+      const { tasks, pages } = getFiltredTasksByStatus(status, selectedPage)
       return res.status(200).json({
         message: 'Deleted successfully',
-        task
+        task,
+        lastTask: tasks.length > 0 && tasks[tasks.length - 1],
+        pages
       });
     } else {
       return es.status(404).json({

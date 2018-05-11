@@ -22,7 +22,7 @@ describe('loadTasks action', () => {
 
     const expectedActions = [
       { type: types.TASKS_FETCH_STARTED },
-      { type: types.TASKS_FETCH_COMPLETED, payload: tasksMock.tasks }
+      { type: types.TASKS_FETCH_COMPLETED, payload: { tasks: tasksMock.tasks } }
     ]
 
     const store = mockStore({})
@@ -40,7 +40,7 @@ describe('createTask action', () => {
 
     const expectedActions = [
       { type: types.TASK_POST_STARTED },
-      { type: types.TASK_POST_COMPLETED, payload: task }
+      { type: types.TASK_POST_COMPLETED, payload: { task } }
     ]
 
     const store = mockStore({})
@@ -58,7 +58,7 @@ describe('updateTask action', () => {
 
     const expectedActions = [
       { type: types.TASK_UPDATE_STARTED },
-      { type: types.TASK_UPDATE_COMPLETED, payload: task }
+      { type: types.TASK_UPDATE_COMPLETED, payload: { task } }
     ]
 
     const store = mockStore({})
@@ -76,7 +76,7 @@ describe('deleteTask action', () => {
 
     const expectedActions = [
       { type: types.TASK_DELETE_STARTED },
-      { type: types.TASK_DELETE_COMPLETED, payload: task }
+      { type: types.TASK_DELETE_COMPLETED, payload: { task } }
     ]
 
     const store = mockStore({})

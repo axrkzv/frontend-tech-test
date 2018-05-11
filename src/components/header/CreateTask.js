@@ -19,7 +19,12 @@ class CreateTask extends Component {
   }
 
   render() {
+    const { data: { isLoading, status } } = this.props
     const { displayCreateTaskModal } = this.state
+
+    if (isLoading) {
+      return null
+    }
 
     return (
       <div className="create-task-container">
@@ -34,6 +39,7 @@ class CreateTask extends Component {
           <CreateTaskModal
             toggle={this.toggleDisplayCreateTaskModal}
             createTask={this.props.createTask}
+            status={status}
           />}
       </div>
     )
@@ -41,9 +47,10 @@ class CreateTask extends Component {
 }
 
 CreateTask.propTypes = {
+  data: PropTypes.object.isRequired,
   createTask: PropTypes.func.isRequired
 }
 
-export default connect(null, {
+export default connect(state => ({ data: state.tasks }), {
   createTask
 })(CreateTask)

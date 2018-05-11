@@ -6,11 +6,10 @@ import { store } from '../store'
 
 export class TasksTestHelper {
 
-  constructor(tasks) {
+  constructor(data) {
     this.screen = mount(<Provider store={store}><Tasks
       checkIsPossibleToAddSubTask={() => true}
-      filter={x => x}
-      tasks={tasks}
+      data={data}
     /></Provider>)
   }
 

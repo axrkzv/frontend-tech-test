@@ -1,15 +1,14 @@
 import * as types from 'constants/actionTypes'
-import RequestBuilder from '../services/RequestBuilder'
 import dataAccess from '../services'
 
-export function loadTasks() {
+export function loadTasks(queries = {}, page = 0) {
   return async (dispatch) => {
     try {
       dispatch({ type: types.TASKS_FETCH_STARTED })
-      const data = await dataAccess.tasksService.loadTasks()
+      const data = await dataAccess.tasksService.loadTasks(page, queries)
       dispatch({
         type: types.TASKS_FETCH_COMPLETED,
-        payload: data.tasks
+        payload: data
       })
     } catch (e) {
       dispatch({ type: types.TASKS_FETCH_FAILED, payload: e })
@@ -18,14 +17,14 @@ export function loadTasks() {
   }
 }
 
-export function createTask(task) {
+export function createTask(task, queries) {
   return async (dispatch) => {
     try {
       dispatch({ type: types.TASK_POST_STARTED })
-      const data = await dataAccess.taskService.createTask(task)
+      const data = await dataAccess.taskService.createTask(task, queries)
       dispatch({
         type: types.TASK_POST_COMPLETED,
-        payload: data.task
+        payload: data
       })
     } catch (e) {
       dispatch({ type: types.TASK_POST_FAILED, payload: e })
@@ -34,14 +33,14 @@ export function createTask(task) {
   }
 }
 
-export function updateTask(task) {
+export function updateTask(task, queries) {
   return async (dispatch) => {
     try {
       dispatch({ type: types.TASK_UPDATE_STARTED })
-      const data = await dataAccess.taskService.updateTask(task)
+      const data = await dataAccess.taskService.updateTask(task, queries)
       dispatch({
         type: types.TASK_UPDATE_COMPLETED,
-        payload: data.task
+        payload: data
       })
     } catch (e) {
       dispatch({ type: types.TASK_UPDATE_FAILED, payload: e })
@@ -50,14 +49,14 @@ export function updateTask(task) {
   }
 }
 
-export function deleteTask(task) {
+export function deleteTask(task, queries) {
   return async (dispatch) => {
     try {
       dispatch({ type: types.TASK_DELETE_STARTED })
-      const data = await dataAccess.taskService.deleteTask(task)
+      const data = await dataAccess.taskService.deleteTask(task, queries)
       dispatch({
         type: types.TASK_DELETE_COMPLETED,
-        payload: data.task
+        payload: data
       })
     } catch (e) {
       dispatch({ type: types.TASK_DELETE_FAILED, payload: e })

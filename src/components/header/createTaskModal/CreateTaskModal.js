@@ -16,13 +16,14 @@ class CreateTaskModal extends Component {
   }
 
   onCreate = () => {
+    const { status, toggle, createTask } = this.props
     const { name, description } = this.state
-    this.props.createTask({
+    createTask({
       name: name.trim(),
       description: description.trim(),
       status: TASK_STATUSES.TODO
-    })
-    this.props.toggle()
+    }, { status })
+    toggle()
   }
 
   setName = (value) => {
@@ -81,7 +82,8 @@ class CreateTaskModal extends Component {
 CreateTaskModal.propTypes = {
   title: PropTypes.string,
   toggle: PropTypes.func.isRequired,
-  createTask: PropTypes.func.isRequired
+  createTask: PropTypes.func.isRequired,
+  status: PropTypes.string
 }
 
 CreateTaskModal.defaultProps = {

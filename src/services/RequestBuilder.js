@@ -79,7 +79,9 @@ export default class RequestBuilder {
   addQueryToUrl() {
     const { url, queries } = this.request
     if (queries) {
-      const query = Object.keys(queries).map(key => `${key}=${queries[key]}`).join('&')
+      const query = Object.keys(queries)
+        .filter(key => queries[key] !== undefined)
+        .map(key => `${key}=${queries[key]}`).join('&')
       this.request.url = `${url}?${query}`
     }
   }

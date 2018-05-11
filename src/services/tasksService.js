@@ -6,7 +6,7 @@ export default class TasksService extends BaseService {
     this.path = 'tasks'
   }
 
-  loadTasks() {
-    return this.request.get().send()
+  loadTasks(page, queries) {
+    return this.request.get().url(page.toString()).queries(queries).send()
   }
 }

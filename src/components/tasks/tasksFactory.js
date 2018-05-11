@@ -1,28 +1,40 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { loadTasks } from 'actions'
 import Tasks from './Tasks'
 
 const checkIsPossibleToAddSubTaskDefault = task => true
 
-export default function tasksFactory(filter, checkIsPossibleToAddSubTask = checkIsPossibleToAddSubTaskDefault) {
-  function TasksComponent({ tasks: { items } }) {
-    return (
-      <Tasks
-        tasks={items}
-        filter={filter}
-        checkIsPossibleToAddSubTask={checkIsPossibleToAddSubTask}
-      />
-    )
+export default function tasksFactory(status, checkIsPossibleToAddSubTask = checkIsPossibleToAddSubTaskDefault) {
+  class TasksComponent extends Component {
+    componentDidMount() {
+      this.props.loadTasks({ status })
+    }
+
+    render() {
+      const { data, loadTasks: loadTasksAction } = this.props
+      return (
+        <Tasks
+          data={data}
+          loadTasks={loadTasksAction}
+          status={status}
+          checkIsPossibleToAddSubTask={checkIsPossibleToAddSubTask}
+        />
+      )
+    }
   }
 
   TasksComponent.propTypes = {
-    tasks: PropTypes.object.isRequired
+    data: PropTypes.object.isRequired,
+    loadTasks: PropTypes.func.isRequired
   }
 
   return connect(
     state => ({
-      tasks: state.tasks
-    })
+      data: state.tasks
+    }), {
+      loadTasks
+    }
   )(TasksComponent)
 }

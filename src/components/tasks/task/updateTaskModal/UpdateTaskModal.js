@@ -21,20 +21,30 @@ class UpdateTaskModal extends Component {
   }
 
   onSave = () => {
-    const { task } = this.props
+    const { task, tasksInfo } = this.props
     const { name, description, status } = this.state
+
+    let queries = {}
+    if (tasksInfo) {
+      queries = { ...tasksInfo }
+    }
+
     this.props.updateTask({
       ...task,
       name: name.trim(),
       description: description.trim(),
       status: status.value
-    })
+    }, queries)
     this.props.toggle()
   }
 
   onDelete = () => {
-    const { task } = this.props
-    this.props.deleteTask(task)
+    const { task, tasksInfo } = this.props
+    let queries = {}
+    if (tasksInfo) {
+      queries = { ...tasksInfo }
+    }
+    this.props.deleteTask(task, queries)
     this.props.toggle()
   }
 
@@ -129,6 +139,7 @@ UpdateTaskModal.propTypes = {
     description: PropTypes.string.isRequired,
     subTasks: PropTypes.array
   }).isRequired,
+  tasksInfo: PropTypes.object,
   toggle: PropTypes.func.isRequired,
   updateTask: PropTypes.func.isRequired,
   deleteTask: PropTypes.func.isRequired

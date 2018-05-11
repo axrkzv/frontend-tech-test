@@ -1,26 +1,29 @@
 import { TasksTestHelper } from 'test_support'
 
-const tasks = [
-  {
-    id: 1,
-    name: 'Task1',
-    description: 'Description1',
-    status: 'ToDo',
-    subTasks: []
-  },
-  {
-    id: 2,
-    name: 'Task2',
-    description: 'Description2',
-    status: 'ToDo',
-    subTasks: []
-  }
-]
+const data = {
+  items: [
+    {
+      id: 1,
+      name: 'Task1',
+      description: 'Description1',
+      status: 'ToDo',
+      subTasks: []
+    },
+    {
+      id: 2,
+      name: 'Task2',
+      description: 'Description2',
+      status: 'ToDo',
+      subTasks: []
+    }
+  ],
+  pages: 1
+}
 
 let app
 
 beforeEach(() => {
-  app = new TasksTestHelper(tasks)
+  app = new TasksTestHelper(data)
 })
 
 it('tasks-list-test', () => {

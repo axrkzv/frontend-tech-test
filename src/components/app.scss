@@ -3,5 +3,59 @@
 .app {
   .tasks {
     padding: 20px 10px;
+
+    .pagination {
+      display: flex;
+      padding-left: 0;
+      list-style: none;
+      padding-left: 10px;
+      padding-right: 10px;
+      font-size: $font-size-big;
+
+      .break-me,
+      .previous-page-link,
+      .next-page-link,
+      .page-link {
+        cursor: pointer;
+        position: relative;
+        display: block;
+        padding: .5rem .75rem;
+        margin-left: -1px;
+        line-height: 1.25;
+        color: $page-link-color;
+        background-color: #fff;
+        border: 1px solid $page-link-border-color;
+
+        &:hover {
+          text-decoration: none;
+          $page-link-hover-background-color: #e9ecef;
+        }
+      }
+
+      .previous-page-link {
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+      }
+
+      .next-page-link {
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
+
+      .break-me {
+        cursor: default;
+      }
+
+      .active {
+        a {
+          color: #fff;
+          background-color: $page-link-color;
+
+          &:hover {
+            background-color: $page-link-color;
+          }
+        }
+      }
+    }
   }
 }

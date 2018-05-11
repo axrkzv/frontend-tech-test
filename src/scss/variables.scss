@@ -22,6 +22,9 @@ $button-primary-focus-background-color: $highlight-blue;
 $done-label-background-color: #14892c;
 $todo-label-background-color: #e0b226;
 
+$page-link-color: #007bff;
+$page-link-border-color: #dee2e6;
+$page-link-hover-background-color: #e9ecef;
 
 // Depth shadows
 $zdepth-shadow-1: 0 2px 6px 0 rgba(0, 0, 0, 0.8) !default;
@@ -32,3 +35,4 @@ $z-index-higher: 200 !default;
 
 // Font sizes
 $font-size-base: 14px;
+$font-size-big: 16px;
