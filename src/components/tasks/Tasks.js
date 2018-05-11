@@ -69,7 +69,6 @@ class Tasks extends Component {
           />))}
         </Masonry>
         {pages > 1 && <ReactPaginate
-          initialPage={5}
           previousLabel={'Previous'}
           nextLabel={'Next'}
           breakLabel={'...'}
